@@ -12,12 +12,13 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final SHA256EncryptionService encoder;
 
 	@Transactional
 	public void signUp(SignUpRequest req) {
 		User user = User.builder()
 			.email(req.getEmail())
-			.password(req.getPassword())
+			.password(encoder.encode(req.getPassword()))
 			.nickname(req.getNickname())
 			.build();
 		userRepository.save(user);
@@ -28,9 +29,9 @@ public class UserService {
 		if (!userRepository.existsByEmail(req.getEmail())) {
 			throw new EntityNotFoundException("User not found");
 		}
-		User user = userRepository.findByEmailAndPassword(req.getEmail(), req.getPassword()).orElseThrow(
-			() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
-		return user;
+		return userRepository.findByEmailAndPassword(
+				req.getEmail(),
+				encoder.encode(req.getPassword()))
+			.orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
 	}
-
 }
