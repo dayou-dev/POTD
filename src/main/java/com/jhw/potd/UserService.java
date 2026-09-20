@@ -1,9 +1,12 @@
 package com.jhw.potd;
 
+import static com.jhw.potd.SessionConstant.*;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -13,6 +16,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final SHA256EncryptionService encoder;
+	private final HttpSession session;
 
 	@Transactional
 	public void signUp(SignUpRequest req) {
@@ -25,13 +29,14 @@ public class UserService {
 	}
 
 	@Transactional
-	public User login(LoginRequest req) {
+	public void login(LoginRequest req) {
 		if (!userRepository.existsByEmail(req.getEmail())) {
 			throw new EntityNotFoundException("User not found");
 		}
-		return userRepository.findByEmailAndPassword(
+		User user = userRepository.findByEmailAndPassword(
 				req.getEmail(),
 				encoder.encode(req.getPassword()))
 			.orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+		session.setAttribute(USER_ID, user.getId());
 	}
 }
