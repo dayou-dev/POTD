@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final SHA256EncryptionService encoder;
+	private final EncryptPasswordEncoder encoder;
 	private final HttpSession session;
 
 	@Transactional
