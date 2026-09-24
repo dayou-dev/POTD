@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: potd
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/potd?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&rewriteBatchedStatements=true&allowLoadLocalInfile=true
+    username: ${DB_USER}
+    # 로컬 docker-compose 전용 개발 비밀번호. 운영 자격증명은 여기 두지 않는다 (CLAUDE.md 작업 경계).
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    # 스키마는 schema.sql 이 만든다 (T-009). Hibernate 가 손대면 인덱스 실험 조건이 흔들린다 —
+    # D-021 은 인덱스를 "(party_id, settlement_date) 하나로 시작" 으로 못 박았다.
+    hibernate:
+      ddl-auto: update
+    # 뷰 렌더링 중 세션을 열어두지 않는다. LAZY 기본(CLAUDE.md)이 의미를 가지려면 여기가 false 여야 한다.
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
