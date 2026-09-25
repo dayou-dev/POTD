@@ -25,11 +25,14 @@ public class Feed {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
+	private String imgUrl;
+
 	private String content;
 
 	@Builder
-	public Feed(User user, String content) {
+	public Feed(User user, String imgUrl, String content) {
 		this.user = user;
+		this.imgUrl = imgUrl;
 		this.content = content;
 	}
 }

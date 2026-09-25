@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FeedRequest {
 
+	private String imgUrl;
 	private String content;
 }

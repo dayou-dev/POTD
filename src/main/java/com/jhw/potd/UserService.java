@@ -39,4 +39,12 @@ public class UserService {
 			.orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
 		session.setAttribute(USER_ID, user.getId());
 	}
+
+	@Transactional
+	public void logout(Long userId) {
+		if (session.getAttribute(USER_ID) != null) {
+			session.removeAttribute(USER_ID);
+		}
+	}
+
 }

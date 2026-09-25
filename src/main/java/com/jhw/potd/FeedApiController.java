@@ -20,7 +20,7 @@ public class FeedApiController {
 
 	@PostMapping
 	public void publishFeeds(Long userId, @RequestBody FeedRequest request) {
-		feedService.publisFeed(userId, request);
+		feedService.publishFeed(userId, request);
 	}
 
 	@GetMapping("/{feedId}")
