@@ -2,6 +2,8 @@ package com.jhw.potd;
 
 import static com.jhw.potd.SessionConstant.*;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final FeedRepository feedRepository;
 	private final EncryptPasswordEncoder encoder;
 	private final HttpSession session;
 
@@ -47,4 +50,14 @@ public class UserService {
 		}
 	}
 
+	public UserProfileResponse getMyProfile(Long userId) {
+		User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+		List<Feed> feeds = feedRepository.findAllByUser(user);
+		return new UserProfileResponse(user.getId(), user.getNickname(), feeds);
+	}
+	public UserProfileResponse getProfile(Long targetId) {
+		User user = userRepository.findById(targetId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+		List<Feed> feeds = feedRepository.findAllByUser(user);
+		return new UserProfileResponse(user.getId(), user.getNickname(), feeds);
+	}
 }
