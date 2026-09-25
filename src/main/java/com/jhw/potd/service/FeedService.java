@@ -1,9 +1,15 @@
-package com.jhw.potd;
+package com.jhw.potd.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jhw.potd.repository.FeedRepository;
+import com.jhw.potd.controller.dto.request.FeedRequest;
+import com.jhw.potd.repository.UserRepository;
+import com.jhw.potd.domain.Feed;
+import com.jhw.potd.domain.User;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

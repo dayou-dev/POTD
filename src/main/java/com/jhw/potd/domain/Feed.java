@@ -1,4 +1,4 @@
-package com.jhw.potd;
+package com.jhw.potd.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

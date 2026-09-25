@@ -1,4 +1,4 @@
-package com.jhw.potd;
+package com.jhw.potd.controller.dto.request;
 
 
 import lombok.AllArgsConstructor;

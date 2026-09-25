@@ -1,6 +1,8 @@
-package com.jhw.potd;
+package com.jhw.potd.controller.dto.response;
 
 import java.util.List;
+
+import com.jhw.potd.domain.Feed;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

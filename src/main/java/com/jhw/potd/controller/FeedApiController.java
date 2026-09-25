@@ -1,4 +1,4 @@
-package com.jhw.potd;
+package com.jhw.potd.controller;
 
 import java.util.List;
 
@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jhw.potd.controller.dto.request.FeedRequest;
+import com.jhw.potd.domain.Feed;
+import com.jhw.potd.service.FeedService;
 
 import lombok.RequiredArgsConstructor;
 

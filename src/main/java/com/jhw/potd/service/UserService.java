@@ -1,11 +1,20 @@
-package com.jhw.potd;
+package com.jhw.potd.service;
 
-import static com.jhw.potd.SessionConstant.*;
+import static com.jhw.potd.global.SessionConstant.*;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jhw.potd.global.EncryptPasswordEncoder;
+import com.jhw.potd.repository.FeedRepository;
+import com.jhw.potd.controller.dto.request.LoginRequest;
+import com.jhw.potd.controller.dto.request.SignUpRequest;
+import com.jhw.potd.controller.dto.response.UserProfileResponse;
+import com.jhw.potd.repository.UserRepository;
+import com.jhw.potd.domain.Feed;
+import com.jhw.potd.domain.User;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;

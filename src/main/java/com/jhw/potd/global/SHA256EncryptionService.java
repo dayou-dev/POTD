@@ -1,4 +1,4 @@
-package com.jhw.potd;
+package com.jhw.potd.global;
 
 import java.security.MessageDigest;
 

@@ -2,7 +2,6 @@ package com.jhw.potd.service;
 
 import static org.mockito.Mockito.*;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,12 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.jhw.potd.EncryptPasswordEncoder;
-import com.jhw.potd.SHA256EncryptionService;
-import com.jhw.potd.SignUpRequest;
-import com.jhw.potd.User;
-import com.jhw.potd.UserRepository;
-import com.jhw.potd.UserService;
+import com.jhw.potd.global.EncryptPasswordEncoder;
+import com.jhw.potd.controller.dto.request.SignUpRequest;
+import com.jhw.potd.domain.User;
+import com.jhw.potd.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
 
