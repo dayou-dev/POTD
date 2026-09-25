@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.jhw.potd.global.EncryptPasswordEncoder;
+import com.jhw.potd.global.encryption.EncryptPasswordEncoder;
 import com.jhw.potd.controller.dto.request.SignUpRequest;
 import com.jhw.potd.domain.User;
 import com.jhw.potd.repository.UserRepository;

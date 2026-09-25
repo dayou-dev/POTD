@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class UserProfileResponse {
 	private Long userId;
 	private String nickname;
-	private List<Feed> feeds;
+	private List<FeedResponse> feeds;
 }

@@ -1,4 +1,4 @@
-package com.jhw.potd.global;
+package com.jhw.potd.global.encryption;
 
 import java.security.MessageDigest;
 

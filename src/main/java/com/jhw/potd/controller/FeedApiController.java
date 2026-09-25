@@ -2,6 +2,8 @@ package com.jhw.potd.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jhw.potd.controller.dto.request.FeedRequest;
+import com.jhw.potd.controller.dto.response.FeedResponse;
 import com.jhw.potd.domain.Feed;
+import com.jhw.potd.global.dto.ApiResponse;
 import com.jhw.potd.service.FeedService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,12 +32,18 @@ public class FeedApiController {
 	}
 
 	@GetMapping("/{feedId}")
-	public Feed getFeed(@PathVariable Long feedId) {
-		return feedService.getFeed(feedId);
+	public ResponseEntity<ApiResponse<FeedResponse>> getFeed(@PathVariable Long feedId) {
+		return ResponseEntity.ok(ApiResponse.success(feedService.getFeed(feedId)));
 	}
 
 	@GetMapping
-	public List<Feed> getFeeds() {
-		return feedService.getFeeds();
+	public ResponseEntity<ApiResponse<List<FeedResponse>>> getFeeds() {
+		return ResponseEntity.ok(ApiResponse.success(feedService.getFeeds()));
+	}
+
+	@DeleteMapping("/{feedId}")
+	public void deleteFeed(Long userId, @PathVariable Long feedId) {
+		feedService.deleteFeed(userId, feedId);
+
 	}
 }

@@ -7,7 +7,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jhw.potd.global.EncryptPasswordEncoder;
+import com.jhw.potd.controller.dto.response.FeedResponse;
+import com.jhw.potd.global.dto.CustomException;
+import com.jhw.potd.global.dto.ErrorCode;
+import com.jhw.potd.global.encryption.EncryptPasswordEncoder;
 import com.jhw.potd.repository.FeedRepository;
 import com.jhw.potd.controller.dto.request.LoginRequest;
 import com.jhw.potd.controller.dto.request.SignUpRequest;
@@ -43,12 +46,12 @@ public class UserService {
 	@Transactional
 	public void login(LoginRequest req) {
 		if (!userRepository.existsByEmail(req.getEmail())) {
-			throw new EntityNotFoundException("User not found");
+			throw new CustomException(ErrorCode.USER_NOT_FOUND);
 		}
 		User user = userRepository.findByEmailAndPassword(
 				req.getEmail(),
 				encoder.encode(req.getPassword()))
-			.orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 		session.setAttribute(USER_ID, user.getId());
 	}
 
@@ -60,13 +63,17 @@ public class UserService {
 	}
 
 	public UserProfileResponse getMyProfile(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+		User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 		List<Feed> feeds = feedRepository.findAllByUser(user);
-		return new UserProfileResponse(user.getId(), user.getNickname(), feeds);
+		return new UserProfileResponse(user.getId(), user.getNickname(),
+			feeds.stream().map(feed -> new FeedResponse()).toList());
 	}
+
 	public UserProfileResponse getProfile(Long targetId) {
-		User user = userRepository.findById(targetId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+		User user = userRepository.findById(targetId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
 		List<Feed> feeds = feedRepository.findAllByUser(user);
-		return new UserProfileResponse(user.getId(), user.getNickname(), feeds);
+		return new UserProfileResponse(user.getId(), user.getNickname(),
+			feeds.stream().map(feed -> new FeedResponse()).toList());
 	}
 }
