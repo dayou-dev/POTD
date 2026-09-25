@@ -18,8 +18,9 @@ public enum ErrorCode {
 	FEED_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
 	// 409 CONFLICT: 데이터 중복
 	DUPLICATE_EMAIL(HttpStatus.CONFLICT, "이미 가입된 이메일입니다."),
-	DUPLICATE_NICKNAME(HttpStatus.CONFLICT, "사용중인 닉네임입니다.")
-
+	DUPLICATE_NICKNAME(HttpStatus.CONFLICT, "사용중인 닉네임입니다."),
+	// 401 UNAUTHORIZED : 권한 없음/ 인증 실패
+	SC_UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"로그인 후 이용할 수 있습니다.")
 	;
 	private final HttpStatus status;
 	private final String message;

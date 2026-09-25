@@ -76,4 +76,8 @@ public class UserService {
 		return new UserProfileResponse(user.getId(), user.getNickname(),
 			feeds.stream().map(feed -> new FeedResponse()).toList());
 	}
+
+	public String getLoginUser() {
+		return (String) session.getAttribute(USER_ID);
+	}
 }
