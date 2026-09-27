@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jhw.potd.controller.dto.request.FeedRequest;
 import com.jhw.potd.controller.dto.response.FeedResponse;
 import com.jhw.potd.domain.Feed;
+import com.jhw.potd.global.LoginUser;
 import com.jhw.potd.global.dto.ApiResponse;
 import com.jhw.potd.service.FeedService;
 
@@ -27,8 +30,9 @@ public class FeedApiController {
 	private final FeedService feedService;
 
 	@PostMapping
-	public void publishFeeds(Long userId, @RequestBody FeedRequest request) {
-		feedService.publishFeed(userId, request);
+	public void publishFeeds(@LoginUser Long userId, @RequestPart FeedRequest request,
+		@RequestPart MultipartFile file) {
+		feedService.publishFeed(userId, request, file);
 	}
 
 	@GetMapping("/{feedId}")

@@ -1,4 +1,4 @@
-package com.jhw.potd.global;
+package com.jhw.potd.global.config;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.jhw.potd.global.LoginCheckInterceptor;
+import com.jhw.potd.global.LoginUserResolver;
 import com.jhw.potd.service.UserService;
 
 import lombok.RequiredArgsConstructor;

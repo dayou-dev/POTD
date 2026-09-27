@@ -4,33 +4,32 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jhw.potd.controller.dto.response.FeedResponse;
-import com.jhw.potd.global.dto.ApiResponse;
 import com.jhw.potd.global.dto.CustomException;
 import com.jhw.potd.global.dto.ErrorCode;
-import com.jhw.potd.global.dto.GlobalExceptionHandler;
 import com.jhw.potd.repository.FeedRepository;
 import com.jhw.potd.controller.dto.request.FeedRequest;
 import com.jhw.potd.repository.UserRepository;
 import com.jhw.potd.domain.Feed;
 import com.jhw.potd.domain.User;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FeedService {
-
+	private final S3ClientService s3ClientService;
 	private final FeedRepository feedRepository;
 	private final UserRepository userRepository;
 
 	@Transactional
-	public void publishFeed(Long userId, FeedRequest request) {
+	public void publishFeed(Long userId, FeedRequest request, MultipartFile file) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-		Feed feed = Feed.builder().user(user).imgUrl(request.getImgUrl()).content(request.getContent()).build();
+		Feed feed = Feed.builder().user(user).imgUrl(file.getOriginalFilename()).content(request.getContent()).build();
+		s3ClientService.uploadImage(file);
 		feedRepository.save(feed);
 	}
 
