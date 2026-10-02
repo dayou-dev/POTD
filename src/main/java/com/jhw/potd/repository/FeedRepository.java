@@ -12,5 +12,5 @@ import com.jhw.potd.domain.User;
 public interface FeedRepository extends JpaRepository<Feed, Long> {
 	List<Feed> findAllByUser(User user);
 
-	Page<Feed> findAll(Pageable pageable);
+	Page<Feed> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

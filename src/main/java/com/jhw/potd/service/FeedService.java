@@ -43,7 +43,7 @@ public class FeedService {
 
 	public Page<FeedResponse> getFeeds(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Feed> feeds =  feedRepository.findAll(pageable);
+		Page<Feed> feeds =  feedRepository.findAllByOrderByCreatedAtDesc(pageable);
 		return feeds.map(FeedResponse::new);
 
 	}
