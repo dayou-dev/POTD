@@ -1,0 +1,12 @@
+# Explain - 인덱스 추가 전
+
+쿼리 :
+SELECT * FROM feed
+ LIMIT 20;
+
+
+mysql EXPLAIN ANALYZE 출력 발췌 (시드 110만 row 기준):
+- type : ALL
+- rows : 1,094,915
+- extra : null
+- filtered : 100
