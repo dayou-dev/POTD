@@ -1,7 +1,9 @@
 package com.jhw.potd.service;
 
-import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,8 +41,11 @@ public class FeedService {
 		return new FeedResponse(feed);
 	}
 
-	public List<FeedResponse> getFeeds() {
-		return feedRepository.findAll().stream().map(feed -> new FeedResponse()).toList();
+	public Page<FeedResponse> getFeeds(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Feed> feeds =  feedRepository.findAll(pageable);
+		return feeds.map(FeedResponse::new);
+
 	}
 
 	@Transactional

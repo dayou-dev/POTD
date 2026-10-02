@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new LoginCheckInterceptor())
 			.order(1)
 			.addPathPatterns("/v1/**") // 보호할 경로
-			.excludePathPatterns("/users/v1/login", "/users/v1/sign-up");
+			.excludePathPatterns("/users/v1/login", "/users/v1/sign-up","/feeds/v1/list");
 	}
 
 	@Override

@@ -8,6 +8,7 @@ build/
 application.yml
 checklist.md
 *.sql
+**/measuer/
 ### STS ###
 .apt_generated
 .classpath
