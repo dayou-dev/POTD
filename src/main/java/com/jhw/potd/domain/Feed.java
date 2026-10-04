@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// @Table(indexes = {@Index(name = "idx_feed_created", columnList = "created_at")}) 디비에 쿼리를 통해 반영
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

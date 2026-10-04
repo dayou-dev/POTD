@@ -1,4 +1,4 @@
-# Explain - 인덱스 추가 전
+# Explain - 인덱스 추가 후
 
 쿼리 :
 explain SELECT * FROM feed
@@ -7,9 +7,8 @@ LIMIT 20;
 
 
 
-
 mysql EXPLAIN ANALYZE 출력 발췌 (시드 110만 row 기준):
-- type : ALL
-- rows : 1,094,915
+- type : Index
+- rows : 20
 - filtered : 100
-- extra : Using filesort
+- extra : Backward index scan
