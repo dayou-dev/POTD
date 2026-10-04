@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +15,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Like extends BaseTimeEntity {
+public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +31,12 @@ public class Like extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Feed feed;
 
+	private String content;
+
 	@Builder
-	public Like(User user, Feed feed) {
+	public Comment(User user, Feed feed, String content) {
 		this.user = user;
 		this.feed = feed;
+		this.content = content;
 	}
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FeedRequest {
+public class ContentRequest {
 
 	private String content;
 }

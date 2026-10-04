@@ -13,7 +13,7 @@ import com.jhw.potd.global.S3ClientService;
 import com.jhw.potd.global.dto.CustomException;
 import com.jhw.potd.global.dto.ErrorCode;
 import com.jhw.potd.repository.FeedRepository;
-import com.jhw.potd.controller.dto.request.FeedRequest;
+import com.jhw.potd.controller.dto.request.ContentRequest;
 import com.jhw.potd.repository.UserRepository;
 import com.jhw.potd.domain.Feed;
 import com.jhw.potd.domain.User;
@@ -29,7 +29,7 @@ public class FeedService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public void publishFeed(Long userId, FeedRequest request, MultipartFile file) {
+	public void publishFeed(Long userId, ContentRequest request, MultipartFile file) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 		Feed feed = Feed.builder().user(user).imgUrl(file.getOriginalFilename()).content(request.getContent()).build();
 		s3ClientService.uploadImage(file);
