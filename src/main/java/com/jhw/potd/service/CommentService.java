@@ -1,9 +1,13 @@
 package com.jhw.potd.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jhw.potd.controller.dto.request.ContentRequest;
+import com.jhw.potd.controller.dto.response.CommentResponse;
 import com.jhw.potd.domain.Comment;
 import com.jhw.potd.domain.Feed;
 import com.jhw.potd.domain.User;
@@ -43,6 +47,15 @@ public class CommentService {
 			throw new IllegalArgumentException("댓글 삭제 권한이 없습니다.");
 		}
 		commentRepository.delete(comment);
+	}
 
+	@Transactional(readOnly = true)
+	public Page<CommentResponse> getComments(Long feedId, int page, int size) {
+
+		Feed feed = feedRepository.findById(feedId).orElseThrow(() ->
+			new CustomException(ErrorCode.FEED_NOT_FOUND));
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Comment> comments = commentRepository.findAllByFeed(feed, pageable);
+		return comments.map(CommentResponse::new);
 	}
 }

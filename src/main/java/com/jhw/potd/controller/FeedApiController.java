@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jhw.potd.controller.dto.request.ContentRequest;
+import com.jhw.potd.controller.dto.response.CommentResponse;
 import com.jhw.potd.controller.dto.response.FeedResponse;
 import com.jhw.potd.global.LoginUser;
 import com.jhw.potd.global.dto.ApiResponse;
@@ -57,6 +58,13 @@ public class FeedApiController {
 	@PostMapping("/{feedId}/like")
 	public ResponseEntity<ApiResponse<Boolean>> likeFeed(@LoginUser Long userId, @PathVariable Long feedId) {
 		return ResponseEntity.ok(ApiResponse.success(likeService.feedLike(userId, feedId)));
+	}
+
+	@GetMapping("/{feedId}/comments")
+	public ResponseEntity<ApiResponse<Page<CommentResponse>>> getComments(@LoginUser Long userId,
+		@PathVariable Long feedId, @RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+		return ResponseEntity.ok(ApiResponse.success(commentService.getComments(feedId, page, size)));
 	}
 
 	@PostMapping("/{feedId}/comments")
