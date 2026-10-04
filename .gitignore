@@ -7,6 +7,8 @@ build/
 
 application.yml
 checklist.md
+bullet.md
+work-plan.md
 *.sql
 
 ### STS ###
