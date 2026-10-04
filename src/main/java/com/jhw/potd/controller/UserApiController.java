@@ -1,6 +1,7 @@
 package com.jhw.potd.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jhw.potd.controller.dto.request.LoginRequest;
 import com.jhw.potd.controller.dto.request.SignUpRequest;
 import com.jhw.potd.controller.dto.response.UserProfileResponse;
+import com.jhw.potd.global.LoginUser;
 import com.jhw.potd.global.dto.ApiResponse;
+import com.jhw.potd.service.FollowService;
 import com.jhw.potd.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class UserApiController {
 
 	private final UserService userService;
+	private final FollowService followService;
 
 	@PostMapping("/sign-up")
 	public void signUp(@RequestBody SignUpRequest req) {
@@ -46,5 +50,15 @@ public class UserApiController {
 	@GetMapping("/{targetId}")
 	public ResponseEntity<ApiResponse<UserProfileResponse>> getUserProfile(@PathVariable Long targetId) {
 		return ResponseEntity.ok(ApiResponse.success(userService.getProfile(targetId)));
+	}
+
+	@PostMapping("/{targetId}/follow")
+	public void follow(@LoginUser Long userId, @PathVariable Long targetId) {
+		followService.follow(userId, targetId);
+	}
+
+	@DeleteMapping("/{targetId}/unfollow")
+	public void unfollow(@LoginUser Long userId, @PathVariable Long targetId) {
+		followService.unfollow(userId, targetId);
 	}
 }
