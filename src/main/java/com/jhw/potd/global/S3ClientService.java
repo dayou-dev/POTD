@@ -1,4 +1,4 @@
-package com.jhw.potd.service;
+package com.jhw.potd.global;
 
 import java.io.IOException;
 import java.util.UUID;

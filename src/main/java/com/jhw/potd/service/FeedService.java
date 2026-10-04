@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jhw.potd.controller.dto.response.FeedResponse;
+import com.jhw.potd.global.S3ClientService;
 import com.jhw.potd.global.dto.CustomException;
 import com.jhw.potd.global.dto.ErrorCode;
 import com.jhw.potd.repository.FeedRepository;

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -17,10 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jhw.potd.controller.dto.request.FeedRequest;
 import com.jhw.potd.controller.dto.response.FeedResponse;
-import com.jhw.potd.domain.Feed;
 import com.jhw.potd.global.LoginUser;
 import com.jhw.potd.global.dto.ApiResponse;
 import com.jhw.potd.service.FeedService;
+import com.jhw.potd.service.LikeService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class FeedApiController {
 
 	private final FeedService feedService;
+	private final LikeService likeService;
 
 	@PostMapping
 	public void publishFeeds(@LoginUser Long userId, @RequestPart FeedRequest request,
@@ -43,13 +43,18 @@ public class FeedApiController {
 	}
 
 	@GetMapping("/list")
-	public ResponseEntity<ApiResponse<Page<FeedResponse>>> getFeeds(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
-		return ResponseEntity.ok(ApiResponse.success(feedService.getFeeds(page,size)));
+	public ResponseEntity<ApiResponse<Page<FeedResponse>>> getFeeds(@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+		return ResponseEntity.ok(ApiResponse.success(feedService.getFeeds(page, size)));
 	}
 
 	@DeleteMapping("/{feedId}")
 	public void deleteFeed(Long userId, @PathVariable Long feedId) {
 		feedService.deleteFeed(userId, feedId);
+	}
 
+	@PostMapping("/{feedId}/like")
+	public ResponseEntity<ApiResponse<Boolean>> likeFeed(@LoginUser Long userId, @PathVariable Long feedId) {
+		return ResponseEntity.ok(ApiResponse.success(likeService.feedLike(userId, feedId)));
 	}
 }
