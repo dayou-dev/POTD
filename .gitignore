@@ -6,9 +6,9 @@ build/
 !**/src/test/**/build/
 
 application.yml
-checklist.md
-bullet.md
-work-plan.md
+docs/**.md
+.claude/**
+CLAUDE.md
 *.sql
 
 ### STS ###
