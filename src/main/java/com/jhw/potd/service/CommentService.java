@@ -42,9 +42,9 @@ public class CommentService {
 		User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
 		Comment comment = commentRepository.findById(commentId)
-			.orElseThrow(() -> new CustomException(ErrorCode.FEED_NOT_FOUND));
+			.orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 		if (!comment.getUser().equals(user) && !comment.getFeed().getUser().equals(user)) {
-			throw new IllegalArgumentException("댓글 삭제 권한이 없습니다.");
+			throw new CustomException(ErrorCode.COMMENT_DELETE_FORBIDDEN);
 		}
 		commentRepository.delete(comment);
 	}

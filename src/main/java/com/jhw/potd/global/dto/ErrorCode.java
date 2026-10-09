@@ -20,11 +20,14 @@ public enum ErrorCode {
 	// 404 NOT_FOUND: 리소스를 찾을 수 없음
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다."),
 	FEED_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
+	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
 	// 409 CONFLICT: 데이터 중복
 	DUPLICATE_EMAIL(HttpStatus.CONFLICT, "이미 가입된 이메일입니다."),
 	DUPLICATE_NICKNAME(HttpStatus.CONFLICT, "사용중인 닉네임입니다."),
 	// 401 UNAUTHORIZED : 권한 없음/ 인증 실패
-	SC_UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"로그인 후 이용할 수 있습니다.")
+	SC_UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"로그인 후 이용할 수 있습니다."),
+	// 403 FORBIDDEN : 권한 부족
+	COMMENT_DELETE_FORBIDDEN(HttpStatus.FORBIDDEN, "댓글 삭제 권한이 없습니다.")
 	;
 	private final HttpStatus status;
 	private final String message;
