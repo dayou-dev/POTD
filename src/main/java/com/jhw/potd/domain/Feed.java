@@ -1,5 +1,8 @@
 package com.jhw.potd.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +33,12 @@ public class Feed extends BaseTimeEntity {
 	private String imgUrl;
 
 	private String content;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "feed")
+	private List<Comment> comments = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "feed")
+	private List<Like> likes = new ArrayList<>();
 
 	@Builder
 	public Feed(User user, String imgUrl, String content) {
