@@ -1,0 +1,16 @@
+package com.jhw.potd.global.interceptor.query;
+
+import org.hibernate.resource.jdbc.spi.StatementInspector;
+
+public class QueryCounterInspector implements StatementInspector {
+	@Override
+	public String inspect(String sql) {
+		// HTTP 요청 컨텍스트
+		RequestContext requestContext = RequestContextHolder.getContext();
+		if (requestContext != null) {
+			requestContext.incrementQueryCount(sql);
+		}
+
+		return sql;
+	}
+}

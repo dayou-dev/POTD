@@ -1,4 +1,4 @@
-package com.jhw.potd.global;
+package com.jhw.potd.global.interceptor;
 
 import static com.jhw.potd.global.SessionConstant.*;
 
