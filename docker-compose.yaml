@@ -1,29 +1,30 @@
 services:
-  db:
-    image: mysql:8.0
-    container_name: db
-    environment:
-      MYSQL_DATABASE: potd
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - monitoring
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "--password=${DB_PASSWORD}" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s  # 컨테이너 시작 후 30초 동안은 실패를 무시
-    deploy:
-      resources:
-        limits:
-          cpus: "2"  # 최대 2개의 코어 할당
-          memory: 2GB   # 최대 2GB 메모리 할당
+  # 호스트(로컬) MySQL 사용 중이라 db 서비스는 비활성화
+  # db:
+  #   image: mysql:8.0
+  #   container_name: db
+  #   environment:
+  #     MYSQL_DATABASE: potd
+  #     MYSQL_USER: ${DB_USER}
+  #     MYSQL_PASSWORD: ${DB_PASSWORD}
+  #     MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   networks:
+  #     - monitoring
+  #   healthcheck:
+  #     test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "--password=${DB_PASSWORD}" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 30s  # 컨테이너 시작 후 30초 동안은 실패를 무시
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: "2"  # 최대 2개의 코어 할당
+  #         memory: 2GB   # 최대 2GB 메모리 할당
 
   app:
     build: .
@@ -31,8 +32,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/potd?allowPublicKeyRetrieval=true&useSSL=false&rewriteBatchedStatements=true
-      DB_HOST: db
+      # 호스트 MySQL 사용 중 — application.yml 템플릿이 조립하도록 URL override 는 비활성화
+      # SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/potd?allowPublicKeyRetrieval=true&useSSL=false&rewriteBatchedStatements=true
+      DB_HOST: host.docker.internal  # macOS Docker Desktop 에서 호스트 머신을 가리키는 DNS
       DB_PORT: 3306
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -49,9 +51,10 @@ services:
         reservations:
           cpus: '0.5'
           memory: 512M
-    depends_on:
-      db:
-        condition: service_healthy  # MySQL의 health check가 성공할 때까지 대기
+    # 호스트 MySQL 사용 중 — compose db 서비스 비활성화에 따라 의존성 제거
+    # depends_on:
+    #   db:
+    #     condition: service_healthy  # MySQL의 health check가 성공할 때까지 대기
     networks:
       - monitoring
 
@@ -89,7 +92,7 @@ services:
           memory: 512M
 
 volumes:
-  mysql_data:
+  # mysql_data:  # db 서비스 비활성화에 따라 사용 안 함
   grafana_data:
 
 networks:
