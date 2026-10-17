@@ -88,21 +88,6 @@ services:
           cpus: '0.5'
           memory: 512M
 
-  # MySQL Exporter
-  mysql_exporter:
-    image: prom/mysqld-exporter
-    container_name: mysql_exporter
-    ports:
-      - "9104:9104"
-    command:
-      - '--mysqld.username=${DB_USER}:${DB_PASSWORD}'
-      - '--mysqld.address=db:3306'
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - monitoring
-
 volumes:
   mysql_data:
   grafana_data:
