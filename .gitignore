@@ -10,6 +10,7 @@ docs/**.md
 .claude/**
 CLAUDE.md
 *.sql
+.env
 
 ### STS ###
 .apt_generated
