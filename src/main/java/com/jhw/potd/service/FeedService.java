@@ -32,7 +32,8 @@ public class FeedService {
 	public void publishFeed(Long userId, ContentRequest request, MultipartFile file) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 		Feed feed = Feed.builder().user(user).imgUrl(file.getOriginalFilename()).content(request.getContent()).build();
-		s3ClientService.uploadImage(file);
+		// s3ClientService.uploadImage(file);
+		s3ClientService.improvedUploadImage(file);
 		feedRepository.save(feed);
 	}
 

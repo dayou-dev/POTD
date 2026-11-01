@@ -16,6 +16,7 @@ public enum ErrorCode {
 
 	// 500 INTERNAL_SERVER_ERROR: 서버 내부 오류
 	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다."),
+	FILE_DOWNLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 다운로드에 실패했습니다."),
 
 	// 404 NOT_FOUND: 리소스를 찾을 수 없음
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다."),
