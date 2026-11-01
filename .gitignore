@@ -7,6 +7,7 @@ build/
 
 application.yml
 docs/**.md
+measure/**
 .claude/**
 CLAUDE.md
 *.sql
