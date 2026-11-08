@@ -1,6 +1,5 @@
 package com.jhw.potd.service;
 
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,9 +30,8 @@ public class FeedService {
 	@Transactional
 	public void publishFeed(Long userId, ContentRequest request, MultipartFile file) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-		Feed feed = Feed.builder().user(user).imgUrl(file.getOriginalFilename()).content(request.getContent()).build();
-		// s3ClientService.uploadImage(file);
-		s3ClientService.improvedUploadImage(file);
+		String imaUrl = s3ClientService.improvedUploadImage(file);
+		Feed feed = Feed.builder().user(user).imgUrl(imaUrl).content(request.getContent()).build();
 		feedRepository.save(feed);
 	}
 
@@ -45,7 +43,7 @@ public class FeedService {
 
 	public Page<FeedResponse> getFeeds(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Feed> feeds =  feedRepository.findAllByOrderByCreatedAtDesc(pageable);
+		Page<Feed> feeds = feedRepository.findAllByOrderByCreatedAtDesc(pageable);
 		return feeds.map(FeedResponse::new);
 
 	}

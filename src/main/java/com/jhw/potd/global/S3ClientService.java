@@ -31,14 +31,14 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 @RequiredArgsConstructor
 public class S3ClientService {
 
-	private static final String ORIGIN_PREFIX = "origin/";
-	private static final String RESIZE_PREFIX = "resize/";
-
 	private final S3Client s3Client;
 	private final ImageResizer resizer;
 
 	@Value("${cloud.aws.S3.bucket}")
 	private String bucket;
+
+	@Value("${cloud.aws.S3.resized-bucket}")
+	private String resizedBucket;
 
 	@Value("${cloud.aws.region.static}")
 	private String region;
@@ -49,8 +49,8 @@ public class S3ClientService {
 
 		String extension = extractExtension(file.getOriginalFilename());
 		String uuid = UUID.randomUUID().toString();
-		String originKey = ORIGIN_PREFIX + uuid + extension;
-		String resizeKey = RESIZE_PREFIX + uuid + extension;
+		String originKey = uuid + extension;
+		// String resizeKey = RESIZE_PREFIX + uuid + extension;
 
 		byte[] originBytes;
 		try {
@@ -60,23 +60,25 @@ public class S3ClientService {
 		}
 
 		putBytes(originKey, originBytes, file.getContentType());
-		byte[] resizedBytes = resizeToBytes(originBytes, extension);
-		putBytes(resizeKey, resizedBytes, file.getContentType());
+		// byte[] resizedBytes = resizeToBytes(originBytes, extension);
+		// putBytes(resizeKey, resizedBytes, file.getContentType());
 
-		return toObjectUrl(resizeKey);
+		// 원본은 bucket 에 올리고, 리사이즈된 사본은 S3 이벤트 트리거된 Lambda 가 resizedBucket 에 동일 키로 떨어뜨림
+		// 피드 조회에 사용할 URL 은 리사이즈본이므로 resizedBucket 기준으로 반환
+		return toObjectUrl(resizedBucket, originKey);
 	}
 
 	// resize/ 폴더의 리사이즈본 바이트를 반환 — 피드 리스트 등 일반 조회용
 	// 주의: byte[] 를 메모리에 통째로 올리므로 대용량/고동시성 환경에서는 힙 압박 가능
-	public byte[] getResizeImage(String filename) {
-		return getImage(RESIZE_PREFIX + filename);
-	}
+	// public byte[] getResizeImage(String filename) {
+	// 	return getImage(RESIZE_PREFIX + filename);
+	// }
 
 	// origin/ 폴더의 원본 바이트를 반환 — 다운로드/고화질 요청용
 	// 주의: 원본은 리사이즈본보다 훨씬 크므로 getResizeImage 보다 메모리 비용이 큼
-	public byte[] getOriginImage(String filename) {
-		return getImage(ORIGIN_PREFIX + filename);
-	}
+	// public byte[] getOriginImage(String filename) {
+	// 	return getImage(ORIGIN_PREFIX + filename);
+	// }
 
 	// S3 객체를 바이트 배열로 가져오는 공통 처리
 	// 문제점:
@@ -143,9 +145,9 @@ public class S3ClientService {
 		}
 	}
 
-	private String generateKey(String originalFilename) {
-		return ORIGIN_PREFIX + UUID.randomUUID() + extractExtension(originalFilename);
-	}
+	// private String generateKey(String originalFilename) {
+	// 	return ORIGIN_PREFIX + UUID.randomUUID() + extractExtension(originalFilename);
+	// }
 
 	// 파일명에서 점 포함 확장자(.jpg, .png 등) 추출, 없으면 빈 문자열
 	private String extractExtension(String originalFilename) {
@@ -155,8 +157,8 @@ public class S3ClientService {
 		return "";
 	}
 
-	private String toObjectUrl(String key) {
-		return String.format("https://%s.s3.%s.amazonaws.com/%s", bucket, region, key);
+	private String toObjectUrl(String bucketName, String key) {
+		return String.format("https://%s.s3.%s.amazonaws.com/resized/%s", bucketName, region, key);
 	}
 
 	private void writeJpeg(BufferedImage image, ByteArrayOutputStream baos, float quality) throws IOException {
